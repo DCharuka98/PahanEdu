@@ -8,7 +8,7 @@
     <display-name>PahanEdu</display-name>
     
     <welcome-file-list>
-        <welcome-file>index.jsp</welcome-file>
+        <welcome-file>LoginPage.jsp</welcome-file>
     </welcome-file-list>
     
 </web-app>
