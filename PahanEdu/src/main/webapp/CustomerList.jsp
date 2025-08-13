@@ -118,7 +118,6 @@
             background-color: rgba(255, 255, 255, 0.2);
         }
 
-        /* Container for customer table */
         .container {
             max-width: 1000px;
             margin: 40px auto;
@@ -126,7 +125,7 @@
             background-color: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(4px);
             border-radius: 12px;
-            flex-grow: 1; /* so footer stays at bottom */
+            flex-grow: 1;
         }
 
         h2 {
@@ -169,6 +168,37 @@
             text-decoration: underline;
         }
 
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .action-btn {
+            background-color: #007bff;
+            color: white;
+            font-weight: 600;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            text-decoration: none;
+        }
+
+        .action-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .action-btn.delete {
+            background-color: #ff6666;
+        }
+
+        .action-btn.delete:hover {
+            background-color: #cc3333;
+        }
+
         footer {
             text-align: center;
             padding: 15px;
@@ -176,7 +206,6 @@
             background: rgba(0, 0, 0, 0.4);
         }
 
-        /* Search form styles */
         form.search-form input[type="text"] {
             padding: 8px;
             width: 250px;
@@ -197,32 +226,23 @@
         form.search-form button:hover {
             background-color: #003d66;
         }
-
-        /* Action buttons */
-        a.action-btn {
-            color: #a3c4f3;
-            font-weight: 600;
-            margin-right: 12px;
-            text-decoration: none;
-        }
-
-        a.action-btn:hover {
-            text-decoration: underline;
-        }
-
-        button.delete-btn {
-            background: none;
-            border: none;
-            color: #ff6666;
-            font-weight: 600;
-            cursor: pointer;
-            padding: 0;
-            font-family: 'Montserrat', sans-serif;
-        }
-
-        button.delete-btn:hover {
-            text-decoration: underline;
-        }
+        
+        form.search-form button {
+		    padding: 8px 14px;
+		    border-radius: 6px;
+		    background-color: #00509e;
+		    color: white;
+		    border: none;
+		    cursor: pointer;
+		    font-weight: 600;
+		    font-family: 'Montserrat', sans-serif;
+		    font-size: 14px;
+		}
+		
+		form.search-form button:hover {
+		    background-color: #003d66;
+		}
+        
     </style>
 </head>
 <body>
@@ -230,17 +250,14 @@
 <div class="overlay">
     <header>
         <div class="header-container">
-            <!-- Left: Logo -->
             <div class="logo">
                 <img src="images/PahanaEduLogo.png" alt="PahanaEdu Logo">
             </div>
 
-            <!-- Center: Title -->
             <div class="header-title">
                 PahanaEdu - Customer List
             </div>
 
-            <!-- Right: User Info + Logout -->
             <div class="user-controls">
                 <div class="user-info">👤 <%= username %></div>
                 <form action="LogoutServlet" method="post">
@@ -262,17 +279,17 @@
 
     <div class="container">
         <h2>All Customers</h2>
+			<form method="get" action="customer" class="search-form" style="text-align: center; margin-bottom: 20px;">
+			    <input 
+			        type="text" 
+			        name="searchQuery" 
+			        placeholder="Search by Name or NIC" 
+			        value="<%= request.getParameter("searchQuery") != null ? request.getParameter("searchQuery") : "" %>" 
+			    />
+			    <button type="submit">Search</button>
+			    <button type="button" onclick="window.location.href='customer';" style="margin-left: 10px;">Clear</button>
+			</form>
 
-        <!-- Search form -->
-        <form method="get" action="customer" class="search-form" style="text-align: center; margin-bottom: 20px;">
-            <input 
-                type="text" 
-                name="searchQuery" 
-                placeholder="Search by Name or NIC" 
-                value="<%= request.getParameter("searchQuery") != null ? request.getParameter("searchQuery") : "" %>" 
-            />
-            <button type="submit">Search</button>
-        </form>
 
         <table>
             <thead>
@@ -283,6 +300,7 @@
                     <th>NIC</th>
                     <th>Address</th>
                     <th>Phone</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -299,11 +317,16 @@
                     <td><%= c.getAddress() %></td>
                     <td><%= c.getPhoneNo() %></td>
                     <td>
-                        <a href="UpdateCustomer.jsp?id=<%= c.getCustomerId() %>" class="action-btn">Update</a>
-                        <form action="DeleteCustomerServlet" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this customer?');">
-                            <input type="hidden" name="id" value="<%= c.getCustomerId() %>" />
-                            <button type="submit" class="delete-btn">Delete</button>
-                        </form>
+                        <div class="action-buttons">
+                            <form action="UpdateCustomer.jsp" method="get">
+                                <input type="hidden" name="id" value="<%= c.getCustomerId() %>" />
+                                <button type="submit" class="action-btn">Update</button>
+                            </form>
+                            <form action="DeleteCustomerServlet" method="post" onsubmit="return confirm('Are you sure you want to delete this customer?');">
+                                <input type="hidden" name="id" value="<%= c.getCustomerId() %>" />
+                                <button type="submit" class="action-btn delete">Delete</button>
+                            </form>
+                        </div>
                     </td>
                 </tr>
             <%

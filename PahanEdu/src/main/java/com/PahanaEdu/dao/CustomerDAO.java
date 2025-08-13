@@ -127,7 +127,8 @@ public class CustomerDAO {
     
     public List<Customer> searchCustomersByNameOrNIC(String query) {
         List<Customer> customers = new ArrayList<>();
-        String sql = "SELECT * FROM customer WHERE name LIKE ? OR nic LIKE ?";
+        String sql = "SELECT * FROM customer WHERE name LIKE ? OR TRIM(nic) LIKE ?";
+
 
         try (Connection conn = DBConnection.getInstance().getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
