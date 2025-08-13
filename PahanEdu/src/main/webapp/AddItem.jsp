@@ -10,13 +10,14 @@
 
     User user = (User) currentSession.getAttribute("loggedUser");
     String username = user.getUsername();
+    String error = (String) request.getAttribute("error");
 %>
 
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>PahanaEdu - Home Page</title>
+    <title>Add New Item</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <style>
         body {
@@ -98,10 +99,6 @@
             gap: 40px;
         }
 
-        .navbar li {
-            display: inline;
-        }
-
         .navbar a {
             color: #b3d4fc;
             text-decoration: none;
@@ -116,36 +113,67 @@
             background-color: rgba(255, 255, 255, 0.2);
         }
 
-      
-        .container {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 25px;
-            max-width: 1000px;
+        .form-container {
+            max-width: 600px;
             margin: 40px auto;
-            padding: 20px;
-        }
-
-        .card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(8px);
-            border-radius: 12px;
             padding: 30px;
-            text-align: center;
+            background-color: rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-            transition: 0.3s;
         }
 
-        .card:hover {
-            background-color: rgba(255, 255, 255, 0.2);
-            transform: translateY(-5px);
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 26px;
         }
 
-        .card a {
-            text-decoration: none;
-            color: #b3d4fc;
-            font-size: 18px;
+        .form-container label {
+            display: block;
             font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .form-container input,
+        .form-container textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: none;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .form-container input[type="submit"] {
+            background-color: #3399ff;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .form-container input[type="submit"]:hover {
+            background-color: #287acc;
+        }
+
+        .error-message {
+            color: #ff4d4d;
+            text-align: center;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #b3d4fc;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
         }
 
         footer {
@@ -159,6 +187,7 @@
 <body>
 
 <div class="overlay">
+    <!-- Header -->
     <header>
         <div class="header-container">
             <div class="logo">
@@ -166,7 +195,7 @@
             </div>
 
             <div class="header-title">
-                PahanaEdu - Home Page
+                Add New Item
             </div>
 
             <div class="user-controls">
@@ -176,9 +205,9 @@
                 </form>
             </div>
         </div>
-
     </header>
 
+    <!-- Navbar -->
     <nav class="navbar">
         <ul>
             <li><a href="home">Home</a></li>
@@ -189,17 +218,35 @@
         </ul>
     </nav>
 
-    <div class="container">
-	    <div class="card"><a href="AddCustomer.jsp">➕ Add Customer</a></div>
-	    <div class="card"><a href="customer">👥 View Customer</a></div>
-	    <div class="card"><a href="AddItem.jsp">➕ Add Item</a></div>
-	    <div class="card"><a href="item">📦 View Item</a></div>
-	    <div class="card"><a href="CalculateBill.jsp">🧾 Generate Bill</a></div>
-	    <div class="card"><a href="BillHistory.jsp">📜 View Bill History</a></div>
-	    <div class="card"><a href="UserProfile.jsp">👤 User Profile</a></div>
-	    <div class="card"><a href="Help.jsp">❓ User Guide</a></div>
-	</div>
+    <!-- Form Container -->
+    <div class="form-container">
+        <% if (error != null) { %>
+            <div class="error-message"><%= error %></div>
+        <% } %>
 
+        <form action="item" method="post" enctype="multipart/form-data">
+            <label for="name">Name:</label>
+            <input type="text" name="name" required>
+
+            <label for="description">Description:</label>
+            <textarea name="description" rows="4" required></textarea>
+
+            <label for="price">Price:</label>
+            <input type="number" name="price" step="0.01" required>
+
+            <label for="stock">Stock Quantity:</label>
+            <input type="number" name="stock" required>
+
+            <label for="image">Image:</label>
+            <input type="file" name="image" accept="image/*" required>
+
+            <input type="submit" value="Add Item">
+        </form>
+
+        <a href="item" class="back-link">⬅ Back to Item List</a>
+    </div>
+
+    <!-- Footer -->
     <footer>
         &copy; 2025 PahanaEdu. All rights reserved.
     </footer>
