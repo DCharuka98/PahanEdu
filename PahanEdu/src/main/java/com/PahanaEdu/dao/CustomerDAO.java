@@ -159,7 +159,7 @@ public class CustomerDAO {
 
 
     public boolean updateCustomer(Customer customer) {
-        String sql = "UPDATE customer SET account_number=?, name=?, address=?, phone_no=? WHERE customer_id=?";
+        String sql = "UPDATE customer SET account_number=?, name=?, address=?, phone_no=?, nic=? WHERE customer_id=?";
 
         try (Connection conn = DBConnection.getInstance().getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -168,7 +168,8 @@ public class CustomerDAO {
             ps.setString(2, customer.getName());
             ps.setString(3, customer.getAddress());
             ps.setString(4, customer.getPhoneNo());
-            ps.setInt(5, customer.getCustomerId());
+            ps.setString(5, customer.getNic());  // <-- added nic here, since it's editable
+            ps.setInt(6, customer.getCustomerId());
 
             return ps.executeUpdate() > 0;
 
@@ -178,6 +179,7 @@ public class CustomerDAO {
 
         return false;
     }
+
 
     public boolean deleteCustomer(int id) {
         String sql = "DELETE FROM customer WHERE customer_id=?";

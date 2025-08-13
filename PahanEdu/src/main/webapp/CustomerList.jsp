@@ -74,7 +74,7 @@
         .logout-btn {
             background: #ff6666;
             color: white;
-            font-weight: bold;
+            font-weight: bold !important;
             border: none;
             padding: 8px 14px;
             border-radius: 6px;
@@ -271,7 +271,7 @@
         <ul>
             <li><a href="home">Home</a></li>
             <li><a href="customer">Customer</a></li>
-            <li><a href="ManageItems.jsp">Product</a></li>
+            <li><a href="ManageItems.jsp">Items</a></li>
             <li><a href="UserProfile.jsp">User Profile</a></li>
             <li><a href="Help.jsp">User Guide</a></li>
         </ul>
@@ -322,10 +322,11 @@
                                 <input type="hidden" name="id" value="<%= c.getCustomerId() %>" />
                                 <button type="submit" class="action-btn">Update</button>
                             </form>
-                            <form action="DeleteCustomerServlet" method="post" onsubmit="return confirm('Are you sure you want to delete this customer?');">
-                                <input type="hidden" name="id" value="<%= c.getCustomerId() %>" />
-                                <button type="submit" class="action-btn delete">Delete</button>
-                            </form>
+                            <form action="customer" method="post" onsubmit="return confirm('Are you sure you want to delete this customer?');">
+							    <input type="hidden" name="id" value="<%= c.getCustomerId() %>" />
+							    <input type="hidden" name="action" value="delete" />
+							    <button type="submit" class="action-btn delete">Delete</button>
+							</form>
                         </div>
                     </td>
                 </tr>
@@ -339,8 +340,17 @@
             %>
             </tbody>
         </table>
+		<%
+		    String successMessage = (String) session.getAttribute("successMessage");
+		    if (successMessage != null) {
+		%>
+		    <script>alert('<%= successMessage %>');</script>
+		<%
+		        session.removeAttribute("successMessage");
+		    }
+		%>
 
-        <a href="AddCustomer.jsp" class="back-link">← Add New Customer</a>
+        <a href="AddCustomer.jsp" class="back-link">➕ Add New Customer</a>
     </div>
 
     <footer>

@@ -1,21 +1,35 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="com.PahanaEdu.model.User" %>
-
+<%@ page import="com.PahanaEdu.model.Customer, com.PahanaEdu.service.CustomerService, com.PahanaEdu.model.User" %>
 <%
     HttpSession currentSession = request.getSession(false);
     if (currentSession == null || currentSession.getAttribute("loggedUser") == null) {
         response.sendRedirect("LoginPage.jsp");
         return;
     }
+
     User user = (User) currentSession.getAttribute("loggedUser");
     String username = user.getUsername();
+
+    String idParam = request.getParameter("id");
+    Customer customer = null;
+    if (idParam != null) {
+        try {
+            int id = Integer.parseInt(idParam);
+            CustomerService customerService = new CustomerService();
+            customer = customerService.getCustomerById(id);
+        } catch (NumberFormatException e) {}
+    }
+    if (customer == null) {
+        response.sendRedirect("customer");
+        return;
+    }
 %>
 
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>Add New Customer - PahanaEdu</title>
+    <meta charset="UTF-8" />
+    <title>Update Customer - PahanaEdu</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <style>
         body {
@@ -71,7 +85,7 @@
         }
 
         .logout-btn {
-            background: #ff6666;
+            background: #ff6666 !important;
             color: white;
             font-weight: bold;
             border: none;
@@ -81,15 +95,13 @@
         }
 
         .logout-btn:hover {
-            background: #cc3333;
+            background: #cc3333 !important;
         }
 
         .navbar {
             margin-top: 10px;
             border-radius: 8px;
             background-color: rgba(0, 51, 102, 0.7);
-            position: sticky;
-            
         }
 
         .navbar ul {
@@ -121,75 +133,71 @@
 
         .container {
             max-width: 500px;
-            margin: 60px auto;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(8px);
+            margin: 40px auto;
             padding: 30px 40px;
+            background-color: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(4px);
             border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
             flex-grow: 1;
         }
 
         h2 {
             text-align: center;
+            margin-bottom: 30px;
             color: #ffffff;
         }
 
-        label {
+        form label {
             display: block;
-            margin: 18px 0 6px;
+            margin-bottom: 8px;
             font-weight: 600;
-            color: #ffffff;
+            color: #b3d4fc;
         }
 
-        input[type=text], input[type=tel] {
+        form input[type="text"] {
             width: 100%;
             padding: 10px 12px;
-            border: 1.5px solid #ccc;
+            margin-bottom: 20px;
+            border: none;
             border-radius: 6px;
-            font-size: 16px;
-            background-color: rgba(255, 255, 255, 0.1);
-            color: white;
+            font-size: 14px;
+            font-family: 'Montserrat', sans-serif;
         }
 
-        input[type=text]::placeholder, input[type=tel]::placeholder {
-            color: #cccccc;
+        form input[readonly] {
+            background-color: #2a2a2a;
+            color: #ccc;
         }
 
-        input[type=text]:focus, input[type=tel]:focus {
-            border-color: #66aaff;
-            outline: none;
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-
-        .btn-submit {
-            margin-top: 30px;
-            width: 100%;
-            padding: 12px;
+        form button[type="submit"] {
             background-color: #007bff;
             color: white;
-            font-size: 18px;
             font-weight: 600;
             border: none;
-            border-radius: 8px;
+            padding: 12px 20px;
+            border-radius: 6px;
             cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 16px;
+            width: 100%;
             transition: background-color 0.3s ease;
         }
 
-        .btn-submit:hover {
+        form button[type="submit"]:hover {
             background-color: #0056b3;
         }
 
-        .back-link {
+        a.cancel-link {
             display: block;
+            margin-top: 15px;
             text-align: center;
-            margin-top: 20px;
-            color: #b3d4fc;
-            text-decoration: none;
+            color: #a3c4f3;
             font-weight: 600;
+            text-decoration: none;
+            font-size: 14px;
         }
 
-        .back-link:hover {
+        a.cancel-link:hover {
             text-decoration: underline;
         }
 
@@ -198,23 +206,22 @@
             padding: 15px;
             color: #ccc;
             background: rgba(0, 0, 0, 0.4);
-            margin-top: 40px;
         }
     </style>
 </head>
 <body>
 
 <div class="overlay">
+
+    <!-- Header -->
     <header>
         <div class="header-container">
             <div class="logo">
-                <img src="images/PahanaEduLogo.png" alt="PahanaEdu Logo">
+                <img src="images/PahanaEduLogo.png" alt="PahanaEdu Logo" />
             </div>
-
             <div class="header-title">
-                PahanaEdu - Add New Customer
+                PahanaEdu - Update Customer
             </div>
-
             <div class="user-controls">
                 <div class="user-info">👤 <%= username %></div>
                 <form action="LogoutServlet" method="post">
@@ -222,8 +229,10 @@
                 </form>
             </div>
         </div>
-    </header>
+    </header> 
 
+
+    <!-- Navbar -->
     <nav class="navbar">
         <ul>
             <li><a href="home">Home</a></li>
@@ -234,40 +243,39 @@
         </ul>
     </nav>
 
+    <!-- Main Form -->
     <div class="container">
-        <h2>Add New Customer</h2>
-
-        <% if (request.getAttribute("error") != null) { %>
-            <p style="color: red; font-weight: bold; text-align: center;">
-                <%= request.getAttribute("error") %>
-            </p>
-        <% } %>
-
+        <h2>Update Customer</h2>
         <form action="customer" method="post">
-            <input type="hidden" name="action" value="add" />
+            <input type="hidden" name="action" value="update" />
+            <input type="hidden" name="id" value="<%= customer.getCustomerId() %>" />
 
-            <label for="name">Customer Name</label>
-            <input type="text" id="name" name="name" required maxlength="100" placeholder="Enter customer name" />
+            <label>Account Number:</label>
+            <input type="text" name="accountNumber" value="<%= customer.getAccountNumber() %>" readonly />
 
-            <label for="nic">NIC</label>
-            <input type="text" id="nic" name="nic" required maxlength="20" placeholder="Enter NIC" />
+            <label>Name:</label>
+            <input type="text" name="name" value="<%= customer.getName() %>" required />
 
-            <label for="address">Address</label>
-            <input type="text" id="address" name="address" required maxlength="200" placeholder="Enter address" />
+            <label>NIC:</label>
+            <input type="text" name="nic" value="<%= customer.getNic() %>" required />
 
-            <label for="phoneNo">Phone Number</label>
-            <input type="tel" id="phoneNo" name="phoneNo" required maxlength="15" placeholder="Enter phone number" pattern="[0-9\-+ ]+" title="Phone number can contain digits, spaces, plus or hyphens" />
+            <label>Address:</label>
+            <input type="text" name="address" value="<%= customer.getAddress() %>" required />
 
-            <button type="submit" class="btn-submit">Add Customer</button>
+            <label>Phone Number:</label>
+            <input type="text" name="phoneNo" value="<%= customer.getPhoneNo() %>" required />
+
+            <button type="submit">Update Customer</button>
+            <a href="customer" class="cancel-link">Cancel</a>
         </form>
-
-        <a href="customer" class="back-link">← Back to Customer List</a>
-    </div>
+      </div>
+    
 
     <footer>
         &copy; 2025 PahanaEdu. All rights reserved.
     </footer>
-</div>
 
+</div>
+ 
 </body>
 </html>

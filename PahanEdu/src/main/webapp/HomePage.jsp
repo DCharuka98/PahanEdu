@@ -161,17 +161,14 @@
 <div class="overlay">
     <header>
         <div class="header-container">
-            <!-- Left: Logo -->
             <div class="logo">
                 <img src="images/PahanaEduLogo.png" alt="PahanaEdu Logo">
             </div>
 
-            <!-- Center: Title -->
             <div class="header-title">
                 PahanaEdu - Home Page
             </div>
 
-            <!-- Right: User Info + Logout -->
             <div class="user-controls">
                 <div class="user-info">👤 <%= username %></div>
                 <form action="LogoutServlet" method="post">
@@ -186,13 +183,12 @@
         <ul>
             <li><a href="home">Home</a></li>
             <li><a href="customer">Customer</a></li>
-            <li><a href="ManageItems.jsp">Product</a></li>
+            <li><a href="ManageItems.jsp">Items</a></li>
             <li><a href="UserProfile.jsp">User Profile</a></li>
             <li><a href="Help.jsp">User Guide</a></li>
         </ul>
     </nav>
 
-    <!-- Main Menu Buttons -->
     <div class="container">
 	    <div class="card"><a href="AddCustomer.jsp">➕ Add Customer</a></div>
 	    <div class="card"><a href="customer">👥 View Customer</a></div>
