@@ -16,10 +16,20 @@ public class CustomerController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        List<Customer> customerList = customerService.getAllCustomers();
+        String searchQuery = request.getParameter("searchQuery");
+
+        List<Customer> customerList;
+
+        if (searchQuery != null && !searchQuery.trim().isEmpty()) {
+            customerList = customerService.searchCustomersByNameOrNIC(searchQuery.trim());
+        } else {
+            customerList = customerService.getAllCustomers();
+        }
+
         request.setAttribute("customers", customerList);
         request.getRequestDispatcher("CustomerList.jsp").forward(request, response);
     }
+
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

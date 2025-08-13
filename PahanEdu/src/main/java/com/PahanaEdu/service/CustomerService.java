@@ -35,4 +35,8 @@ public class CustomerService {
     public String generateNextAccountNumber() {
         return customerDAO.generateNextAccountNumber();
     }
+    
+    public List<Customer> searchCustomersByNameOrNIC(String query) {
+        return customerDAO.searchCustomersByNameOrNIC(query);
+    }
 }

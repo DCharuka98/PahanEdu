@@ -124,6 +124,38 @@ public class CustomerDAO {
 
         return customers;
     }
+    
+    public List<Customer> searchCustomersByNameOrNIC(String query) {
+        List<Customer> customers = new ArrayList<>();
+        String sql = "SELECT * FROM customer WHERE name LIKE ? OR nic LIKE ?";
+
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            String likeQuery = "%" + query + "%";
+            ps.setString(1, likeQuery);
+            ps.setString(2, likeQuery);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Customer customer = new Customer();
+                customer.setCustomerId(rs.getInt("customer_id"));
+                customer.setAccountNumber(rs.getString("account_number"));
+                customer.setName(rs.getString("name"));
+                customer.setAddress(rs.getString("address"));
+                customer.setPhoneNo(rs.getString("phone_no"));
+                customer.setNic(rs.getString("nic"));
+                customers.add(customer);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return customers;
+    }
+
 
     public boolean updateCustomer(Customer customer) {
         String sql = "UPDATE customer SET account_number=?, name=?, address=?, phone_no=? WHERE customer_id=?";
