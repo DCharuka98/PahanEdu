@@ -19,4 +19,16 @@ public class ItemService {
     public List<Item> searchItems(String query) {
         return itemDAO.searchItems(query);
     }
+    
+    public Item getItemById(int itemId) {
+        return itemDAO.getItemById(itemId);
+    }
+    public boolean updateItem(Item item) {
+        return new ItemDAO().updateItem(item);
+    }
+
+    public boolean deleteItem(int itemId) {
+        return new ItemDAO().deleteItem(itemId);
+    }
+
 }

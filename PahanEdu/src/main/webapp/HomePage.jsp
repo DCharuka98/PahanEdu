@@ -183,7 +183,7 @@
         <ul>
             <li><a href="home">Home</a></li>
             <li><a href="customer">Customer</a></li>
-            <li><a href="ItemList.jsp">Items</a></li>
+            <li><a href="item">Items</a></li>
             <li><a href="UserProfile.jsp">User Profile</a></li>
             <li><a href="Help.jsp">User Guide</a></li>
         </ul>
