@@ -13,7 +13,7 @@ public class UserDAO {
     }
 
     public boolean usernameExists(String username) throws SQLException {
-        String sql = "SELECT COUNT(*) FROM user WHERE username = ?";
+        String sql = "SELECT COUNT(*) FROM users WHERE username = ?";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, username);
             ResultSet rs = stmt.executeQuery();
@@ -25,7 +25,7 @@ public class UserDAO {
     }
 
     public boolean registerUser(User user) throws SQLException {
-        String sql = "INSERT INTO user (username, password, full_name, role) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO users (username, password, full_name, role) VALUES (?, ?, ?, ?)";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, user.getUsername());
             stmt.setString(2, user.getPassword());
@@ -38,22 +38,24 @@ public class UserDAO {
     }
     
     public User validateUser(String username, String password) throws SQLException {
-        String sql = "SELECT * FROM user WHERE username = ? AND password = ?";
+        String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, username);
-            stmt.setString(2, password); // Note: consider hashing passwords in production
+            stmt.setString(2, password); 
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                User user = new User();
-                user.setUsername(rs.getString("username"));
-                user.setPassword(rs.getString("password")); // Or omit for security
-                user.setFullName(rs.getString("full_name"));
-                user.setRole(rs.getString("role"));
-                return user;
+                User users = new User();
+                users.setUserId(rs.getInt("user_id"));       
+                users.setUsername(rs.getString("username"));
+                users.setPassword(rs.getString("password")); 
+                users.setFullName(rs.getString("full_name"));
+                users.setRole(rs.getString("role"));
+                return users;
             }
         }
         return null;
     }
+
 
 }

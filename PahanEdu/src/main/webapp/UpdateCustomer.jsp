@@ -29,7 +29,8 @@
 <html>
 <head>
     <meta charset="UTF-8" />
-    <title>Update Customer - PahanaEdu</title>
+    <title>PahanaEdu - Update Customer</title>
+    <link rel="icon" type="image/png" href="images/PahanaEduLogo.png">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <style>
         body {

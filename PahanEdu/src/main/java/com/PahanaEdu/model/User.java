@@ -1,6 +1,7 @@
 package com.PahanaEdu.model;
 
 public class User {
+	private int userId;
     private String fullName;
     private String username;
     private String password;
@@ -13,6 +14,14 @@ public class User {
         this.username = username;
         this.password = password;
         this.role = role;
+    }
+    
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getFullName() { 

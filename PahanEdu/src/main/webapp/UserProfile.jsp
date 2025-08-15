@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.PahanaEdu.model.User" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <%
     HttpSession currentSession = request.getSession(false);
@@ -16,7 +17,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>PahanaEdu - Home Page</title>
+    <title>Edit Profile - PahanaEdu</title>
     <link rel="icon" type="image/png" href="images/PahanaEduLogo.png">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <style>
@@ -117,36 +118,71 @@
             background-color: rgba(255, 255, 255, 0.2);
         }
 
-      
         .container {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 25px;
-            max-width: 1000px;
-            margin: 40px auto;
-            padding: 20px;
-        }
-
-        .card {
+            max-width: 500px;
+            margin: 50px auto;
             background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(8px);
-            border-radius: 12px;
+            backdrop-filter: blur(10px);
             padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+            color: white;
+        }
+
+        h2 {
             text-align: center;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-            transition: 0.3s;
+            margin-bottom: 20px;
         }
 
-        .card:hover {
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 4px;
+            border: none;
             background-color: rgba(255, 255, 255, 0.2);
-            transform: translateY(-5px);
+            color: white;
         }
 
-        .card a {
-            text-decoration: none;
-            color: #b3d4fc;
-            font-size: 18px;
-            font-weight: 600;
+        input::placeholder {
+            color: #ccc;
+        }
+
+        .submit-btn {
+            margin-top: 20px;
+            padding: 10px;
+            width: 100%;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .submit-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .message {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 4px;
+        }
+
+        .success {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .error {
+            background-color: #dc3545;
+            color: white;
         }
 
         footer {
@@ -158,8 +194,8 @@
     </style>
 </head>
 <body>
-
 <div class="overlay">
+
     <header>      
         <div class="header-container">
             <div class="logo">
@@ -167,7 +203,7 @@
             </div>
 
             <div class="header-title">
-                PahanaEdu - Home Page
+                PahanaEdu - Edit Profile
             </div>
 
             <div class="user-controls">
@@ -177,7 +213,6 @@
                 </form>
             </div>
         </div>
-
     </header>
 
     <nav class="navbar">
@@ -191,20 +226,50 @@
     </nav>
 
     <div class="container">
-	    <div class="card"><a href="AddCustomer.jsp">➕ Add Customer</a></div>
-	    <div class="card"><a href="customer">👥 View Customer</a></div>
-	    <div class="card"><a href="AddItem.jsp">➕ Add Item</a></div>
-	    <div class="card"><a href="item">📦 View Item</a></div>
-	    <div class="card"><a href="GenerateBill.jsp">🧾 Generate Bill</a></div>
-	    <div class="card"><a href="BillHistory.jsp">📜 View Bill History</a></div>
-	    <div class="card"><a href="UserProfile.jsp">👤 User Profile</a></div>
-	    <div class="card"><a href="Help.jsp">❓ User Guide</a></div>
-	</div>
+        <h2>Edit Profile</h2>
+
+        <c:if test="${not empty sessionScope.successMsg}">
+            <div class="message success">${sessionScope.successMsg}</div>
+            <c:remove var="successMsg" scope="session"/>
+        </c:if>
+        <c:if test="${not empty sessionScope.errorMsg}">
+            <div class="message error">${sessionScope.errorMsg}</div>
+            <c:remove var="errorMsg" scope="session"/>
+        </c:if>
+
+        <form action="UpdateUserProfileServlet" method="post">
+            <label>Username:</label>
+            <input type="text" name="username" value="<%= user.getUsername() %>" required>
+
+            <label>Password:</label>
+            <input type="password" name="password" placeholder="Enter new password">
+
+            <label>Confirm Password:</label>
+            <input type="password" name="confirmPassword" placeholder="Confirm new password">
+
+            <label>Full Name:</label>
+            <input type="text" name="full_name" value="<%= user.getFullName() %>" required>
+
+            <input class="submit-btn" type="submit" value="Update Profile">
+        </form>
+    </div>
 
     <footer>
         &copy; 2025 PahanaEdu. All rights reserved.
     </footer>
 </div>
 
+<!-- JS password confirmation -->
+<script>
+    const form = document.querySelector('form');
+    form.addEventListener('submit', function(e) {
+        const pass = form.password.value;
+        const confirm = form.confirmPassword.value;
+        if (pass !== confirm) {
+            e.preventDefault();
+            alert('Passwords do not match!');
+        }
+    });
+</script>
 </body>
 </html>

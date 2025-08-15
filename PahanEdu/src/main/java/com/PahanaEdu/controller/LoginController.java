@@ -20,11 +20,11 @@ public class LoginController extends HttpServlet {
 
         try {
             UserDAO userDAO = new UserDAO();
-            User user = userDAO.validateUser(username, password);
+            User users = userDAO.validateUser(username, password);
 
-            if (user != null) {
+            if (users != null) {
                 HttpSession session = request.getSession();
-                session.setAttribute("loggedUser", user);
+                session.setAttribute("loggedUser", users);
                 response.sendRedirect("HomePage.jsp");
             } else {
                 response.sendRedirect("LoginPage.jsp?error=1");

@@ -15,6 +15,7 @@
 <head>
     <meta charset="UTF-8">
     <title>PahanaEdu - Generate Bill</title>
+    <link rel="icon" type="image/png" href="images/PahanaEduLogo.png">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <style>
         body {
