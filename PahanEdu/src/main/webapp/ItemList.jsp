@@ -274,7 +274,6 @@
 <body>
 
 <div class="overlay">
-    <!-- Header -->
     <header>
         <div class="header-container">
             <div class="logo">
@@ -292,7 +291,6 @@
         </div>
     </header>
 
-    <!-- Navbar -->
     <nav class="navbar">
         <ul>
             <li><a href="home">Home</a></li>
@@ -303,14 +301,12 @@
         </ul>
     </nav>
 
-    <!-- Search Form -->
     <form action="item" method="get" class="controls">
         <input type="text" name="query" placeholder="Search items..." value="<%= request.getParameter("query") != null ? request.getParameter("query") : "" %>">
         <button type="submit" class="btn btn-search">Search</button>
         <a href="item" class="btn btn-clear">Clear</a>
     </form>
 
-    <!-- Item List -->
     <div class="container">
         <h2>ITEM LIST</h2>
 
@@ -349,7 +345,6 @@
         <% } %>
     </div>
 
-    <!-- Footer -->
     <footer>
         &copy; 2025 PahanaEdu. All rights reserved.
     </footer>

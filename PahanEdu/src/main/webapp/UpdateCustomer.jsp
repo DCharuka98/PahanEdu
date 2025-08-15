@@ -213,7 +213,6 @@
 
 <div class="overlay">
 
-    <!-- Header -->
     <header>
         <div class="header-container">
             <div class="logo">
@@ -232,7 +231,6 @@
     </header> 
 
 
-    <!-- Navbar -->
     <nav class="navbar">
         <ul>
             <li><a href="home">Home</a></li>
@@ -243,7 +241,6 @@
         </ul>
     </nav>
 
-    <!-- Main Form -->
     <div class="container">
         <h2>Update Customer</h2>
         <form action="customer" method="post">

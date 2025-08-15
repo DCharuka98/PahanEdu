@@ -187,7 +187,6 @@
 <body>
 
 <div class="overlay">
-    <!-- Header -->
     <header>
         <div class="header-container">
             <div class="logo">
@@ -207,7 +206,6 @@
         </div>
     </header>
 
-    <!-- Navbar -->
     <nav class="navbar">
         <ul>
             <li><a href="home">Home</a></li>
@@ -218,7 +216,6 @@
         </ul>
     </nav>
 
-    <!-- Form Container -->
     <div class="form-container">
         <% if (error != null) { %>
             <div class="error-message"><%= error %></div>
@@ -246,7 +243,6 @@
         <a href="item" class="back-link">⬅ Back to Item List</a>
     </div>
 
-    <!-- Footer -->
     <footer>
         &copy; 2025 PahanaEdu. All rights reserved.
     </footer>

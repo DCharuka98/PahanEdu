@@ -7,6 +7,7 @@ import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 @WebServlet("/customer")
@@ -16,6 +17,32 @@ public class CustomerController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        String action = request.getParameter("action");
+
+        if ("getByNIC".equals(action)) {
+            String nic = request.getParameter("nic");
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+
+            PrintWriter out = response.getWriter();
+
+            if (nic == null || nic.trim().isEmpty()) {
+                out.print("{\"error\": \"NIC is required\"}");
+                return;
+            }
+
+            Customer customer = customerService.getCustomerByNIC(nic.trim());
+
+            if (customer != null) {
+                out.print("{\"name\": \"" + customer.getName() + "\"}");
+            } else {
+                out.print("{\"error\": \"Customer not found\"}");
+            }
+
+            out.flush();
+            return;
+        }
 
         String searchQuery = request.getParameter("searchQuery");
 
@@ -31,6 +58,7 @@ public class CustomerController extends HttpServlet {
 
         request.getRequestDispatcher("CustomerList.jsp").forward(request, response);
     }
+
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

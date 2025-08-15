@@ -35,7 +35,7 @@ public class CustomerDAO {
 
             ps.setString(1, nic);
             ResultSet rs = ps.executeQuery();
-            return rs.next(); // Returns true if NIC already exists
+            return rs.next(); 
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -43,7 +43,6 @@ public class CustomerDAO {
 
         return false;
     }
-
     
     public String generateNextAccountNumber() {
         String prefix = "AC";
@@ -59,7 +58,7 @@ public class CustomerDAO {
                 String maxAccount = rs.getString("max_account");
 
                 if (maxAccount != null && maxAccount.length() >= 8) {
-                    String numberPart = maxAccount.substring(2); // Skip 'AC'
+                    String numberPart = maxAccount.substring(2); 
                     nextNumber = Integer.parseInt(numberPart) + 1;
                 }
             }
@@ -168,7 +167,7 @@ public class CustomerDAO {
             ps.setString(2, customer.getName());
             ps.setString(3, customer.getAddress());
             ps.setString(4, customer.getPhoneNo());
-            ps.setString(5, customer.getNic());  // <-- added nic here, since it's editable
+            ps.setString(5, customer.getNic()); 
             ps.setInt(6, customer.getCustomerId());
 
             return ps.executeUpdate() > 0;
@@ -195,5 +194,32 @@ public class CustomerDAO {
         }
 
         return false;
+    }
+    
+    public Customer getCustomerByNIC(String nic) {
+        Customer customer = null;
+
+        String sql = "SELECT * FROM customer WHERE nic = ?";
+
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, nic);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                customer = new Customer();
+                customer.setCustomerId(rs.getInt("customer_id"));
+                customer.setAccountNumber(rs.getString("account_number"));
+                customer.setName(rs.getString("name"));
+                customer.setAddress(rs.getString("address"));
+                customer.setPhoneNo(rs.getString("phone_no"));
+                customer.setNic(rs.getString("nic"));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace(); 
+        }
+        return customer;
     }
 }

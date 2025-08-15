@@ -12,9 +12,5 @@ public class BillService {
     public BillService() {
         this.billDAO = new BillDAO();
     }
-
-    public List<Bill> getLastFiveBills() {
-        return billDAO.getLastFiveBills();
-    }
-
+   
 }

@@ -23,12 +23,10 @@ public class LoginController extends HttpServlet {
             User user = userDAO.validateUser(username, password);
 
             if (user != null) {
-                // Login success: set session and redirect
                 HttpSession session = request.getSession();
-                session.setAttribute("loggedUser", user); // optional for use across the app
+                session.setAttribute("loggedUser", user);
                 response.sendRedirect("HomePage.jsp");
             } else {
-                // Login failed: redirect with error
                 response.sendRedirect("LoginPage.jsp?error=1");
             }
 

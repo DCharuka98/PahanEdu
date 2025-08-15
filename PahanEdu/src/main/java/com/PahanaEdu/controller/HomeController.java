@@ -18,7 +18,6 @@ public class HomeController extends HttpServlet {
             return;
         }
 
-        // No bills fetching anymore
         request.getRequestDispatcher("HomePage.jsp").forward(request, response);
     }
 }

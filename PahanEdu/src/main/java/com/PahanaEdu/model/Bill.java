@@ -1,15 +1,16 @@
 package com.PahanaEdu.model;
 
 import java.sql.Date;
+import java.util.List;
 
 public class Bill {
     private int billId;
-    private int customerId; // ✅ true field in the `bill` table
-    private String customerName; // ✅ derived from JOIN with `customer` table
+    private int customerId; 
+    private String customerName; 
     private Date date;
     private double totalAmount;
+    private List<BillItem> items;
 
-    // Getters and Setters
     public int getBillId() {
         return billId;
     }
@@ -48,5 +49,13 @@ public class Bill {
 
     public void setTotalAmount(double totalAmount) {
         this.totalAmount = totalAmount;
+    }
+
+    public List<BillItem> getItems() {
+        return items;
+    }
+
+    public void setItems(List<BillItem> items) {
+        this.items = items;
     }
 }

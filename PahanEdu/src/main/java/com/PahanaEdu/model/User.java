@@ -15,7 +15,6 @@ public class User {
         this.role = role;
     }
 
-    
     public String getFullName() { 
     	return fullName; 
     	}

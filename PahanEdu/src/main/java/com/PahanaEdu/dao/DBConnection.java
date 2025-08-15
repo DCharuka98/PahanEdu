@@ -14,13 +14,12 @@ public class DBConnection {
 
     private DBConnection() {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver"); // Load driver once
+            Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
 
-    // Thread-safe lazy initialization
     public static DBConnection getInstance() {
         if (instance == null) {
             synchronized (DBConnection.class) {
@@ -32,7 +31,6 @@ public class DBConnection {
         return instance;
     }
 
-    // Always returns a fresh connection (throws SQLException)
     public Connection getConnection() throws SQLException {
         return DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
     }

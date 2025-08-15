@@ -39,4 +39,9 @@ public class CustomerService {
     public List<Customer> searchCustomersByNameOrNIC(String query) {
         return customerDAO.searchCustomersByNameOrNIC(query);
     }
+    
+    public Customer getCustomerByNIC(String nic) {
+        return customerDAO.getCustomerByNIC(nic);
+    }
+
 }

@@ -194,7 +194,7 @@
 	    <div class="card"><a href="customer">👥 View Customer</a></div>
 	    <div class="card"><a href="AddItem.jsp">➕ Add Item</a></div>
 	    <div class="card"><a href="item">📦 View Item</a></div>
-	    <div class="card"><a href="CalculateBill.jsp">🧾 Generate Bill</a></div>
+	    <div class="card"><a href="GenerateBill.jsp">🧾 Generate Bill</a></div>
 	    <div class="card"><a href="BillHistory.jsp">📜 View Bill History</a></div>
 	    <div class="card"><a href="UserProfile.jsp">👤 User Profile</a></div>
 	    <div class="card"><a href="Help.jsp">❓ User Guide</a></div>

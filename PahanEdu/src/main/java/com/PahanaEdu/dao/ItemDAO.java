@@ -103,7 +103,6 @@ public class ItemDAO {
         return null;
     }
     
- // In ItemDAO.java
     public boolean updateItem(Item item) {
         String sql = "UPDATE item SET name = ?, description = ?, price = ?, stock_quantity = ?, image_path = ? WHERE item_id = ?";
         try (Connection conn = DBConnection.getInstance().getConnection();
@@ -140,6 +139,4 @@ public class ItemDAO {
         }
         return false;
     }
-
-
 }

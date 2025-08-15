@@ -8,7 +8,6 @@ public class Customer {
     private String address;
     private String phoneNo;
 
-    // Getters & Setters
     public int getCustomerId() {
         return customerId;
     }
