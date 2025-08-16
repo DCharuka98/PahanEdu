@@ -1,5 +1,5 @@
 # PahanEdu
-Pahana Edu Bookshop Billing System is a Java-based, menu-driven web application designed to streamline customer and billing management for Pahana Edu, a leading bookshop in Colombo City. The system replaces the existing manual record-keeping process
+Pahana Edu Bookshop Billing System is a Java-based, menu-driven web application designed to streamline customer and billing management for Pahana Edu, a leading bookshop in Colombo City. The system replaces the existing manual record-keeping process, offering a more efficient and user-friendly approach to managing customer accounts, item inventories, and billing operations.
 
 **📌 Features**
 1.	User Authentication (Login)
