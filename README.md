@@ -38,3 +38,15 @@ Pahana Edu Bookshop Billing System is a Java-based, menu-driven web application 
   
   -	Allows users to securely close the application session.
 
+
+🛠️ Technologies Used
+
+   Backend: Java, Servlets, JSP
+
+   Frontend: JSP, HTML, CSS, JavaScript
+
+   Database: MySQL Workbench
+   
+   Build Tool: Maven 
+
+   Libraries: Gson, Servlet API
