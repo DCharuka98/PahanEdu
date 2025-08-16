@@ -206,20 +206,19 @@
     <nav class="navbar">
         <ul>
             <li><a href="home">Home</a></li>
+            <li><a href="GenerateBill.jsp">Generate Bill</a></li>
             <li><a href="customer">Customer</a></li>
             <li><a href="item">Items</a></li>
             <li><a href="UserProfile.jsp">User Profile</a></li>
             <li><a href="Help.jsp">User Guide</a></li>
         </ul>
     </nav>
-    <!-- SEARCH FORM -->
     <form class="search-box" method="get" action="BillHistory.jsp">
         <input type="text" name="search" placeholder="Search by Name, NIC or Amount" value="<%= searchQuery != null ? searchQuery : "" %>">
         <button class="btn-search" type="submit">Search</button>
         <button class="btn-clear" type="button" onclick="window.location='BillHistory.jsp'">Clear</button>
     </form>
 
-    <!-- TABLE -->
     <table>
         <tr>
             <th>Bill ID</th>
@@ -244,7 +243,7 @@
                         double amount = Double.parseDouble(searchQuery);
                         ps.setDouble(3, amount);
                     } catch (NumberFormatException e) {
-                        ps.setDouble(3, -1); // won't match if not a number
+                        ps.setDouble(3, -1); 
                     }
                 } else {
                     ps = conn.prepareStatement(sql);
@@ -280,7 +279,6 @@
         %>
     </table>
 
-    <!-- FOOTER -->
     <footer>
         &copy; 2025 PahanaEdu Bookshop. All Rights Reserved.
     </footer>

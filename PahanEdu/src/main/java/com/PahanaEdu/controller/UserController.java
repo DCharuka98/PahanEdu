@@ -2,11 +2,9 @@ package com.PahanaEdu.controller;
 
 import com.PahanaEdu.model.User;
 import com.PahanaEdu.dao.DBConnection;
-
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -29,13 +27,11 @@ public class UserController extends HttpServlet {
 
         User user = (User) session.getAttribute("loggedUser");
 
-        // Get and safely trim inputs
         String username = safeTrim(request.getParameter("username"));
         String password = safeTrim(request.getParameter("password"));
         String confirmPassword = safeTrim(request.getParameter("confirmPassword"));
         String fullName = safeTrim(request.getParameter("full_name"));
 
-        // Password validation only if fields are not empty
         if (!password.isEmpty() || !confirmPassword.isEmpty()) {
             if (!password.equals(confirmPassword)) {
                 session.setAttribute("errorMsg", "Passwords do not match!");
@@ -50,7 +46,6 @@ public class UserController extends HttpServlet {
         try {
             conn = DBConnection.getInstance().getConnection();
 
-            // Build SQL dynamically
             StringBuilder sql = new StringBuilder("UPDATE users SET ");
             boolean needComma = false;
 
@@ -74,13 +69,12 @@ public class UserController extends HttpServlet {
 
             pst = conn.prepareStatement(sql.toString());
 
-            // Set parameters dynamically
             int index = 1;
             if (!username.equals(user.getUsername())) {
                 pst.setString(index++, username);
             }
             if (!password.isEmpty() && password.equals(confirmPassword)) {
-                pst.setString(index++, password); // 🔐 Still recommend hashing in real apps
+                pst.setString(index++, password); 
             } else if (!password.isEmpty()) {
                 session.setAttribute("errorMsg", "Passwords do not match!");
                 response.sendRedirect("UserProfile.jsp");
@@ -96,7 +90,6 @@ public class UserController extends HttpServlet {
             int updated = pst.executeUpdate();
 
             if (updated > 0) {
-                // Update session object with new values
                 if (!username.equals(user.getUsername())) user.setUsername(username);
                 if (!password.isEmpty()) user.setPassword(password);
                 if (!fullName.equals(user.getFullName())) user.setFullName(fullName);
@@ -118,7 +111,6 @@ public class UserController extends HttpServlet {
         response.sendRedirect("UserProfile.jsp");
     }
 
-    // Utility method to trim safely (handles null input)
     private String safeTrim(String value) {
         return value != null ? value.trim() : "";
     }

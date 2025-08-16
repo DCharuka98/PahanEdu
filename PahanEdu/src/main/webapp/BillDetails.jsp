@@ -205,6 +205,7 @@
     <nav class="navbar">
         <ul>
             <li><a href="home">Home</a></li>
+            <li><a href="GenerateBill.jsp">Generate Bill</a></li>
             <li><a href="customer">Customer</a></li>
             <li><a href="item">Items</a></li>
             <li><a href="UserProfile.jsp">User Profile</a></li>
@@ -217,7 +218,6 @@
         if (billId > 0) {
             conn = DBConnection.getInstance().getConnection();
 
-            // Fetch bill + customer info
             String sqlBill = "SELECT b.bill_id, b.total_amount, b.bill_date, c.name, c.nic " +
                              "FROM bill b JOIN customer c ON b.customer_id = c.customer_id " +
                              "WHERE b.bill_id = ?";
@@ -231,7 +231,6 @@
                 billDate = rsBill.getDate("bill_date");
             }
 
-            // Fetch bill items
             String sqlItems = "SELECT i.name, bi.quantity, bi.item_price " +
                               "FROM bill_items bi JOIN item i ON bi.item_id = i.item_id " +
                               "WHERE bi.bill_id = ?";

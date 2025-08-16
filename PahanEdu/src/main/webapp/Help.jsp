@@ -1,12 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.PahanaEdu.model.User" %>
-
 <%
     HttpSession currentSession = request.getSession(false);
     if (currentSession == null || currentSession.getAttribute("loggedUser") == null) {
         response.sendRedirect("LoginPage.jsp");
         return;
     }
+
     User user = (User) currentSession.getAttribute("loggedUser");
     String username = user.getUsername();
 %>
@@ -15,7 +15,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Add New Customer - PahanaEdu</title>
+    <title>PahanaEdu - User Guide</title>
     <link rel="icon" type="image/png" href="images/PahanaEduLogo.png">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <style>
@@ -31,8 +31,6 @@
         .overlay {
             background-color: rgba(18, 27, 40, 0.85);
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
         }
 
         header {
@@ -89,8 +87,6 @@
             margin-top: 10px;
             border-radius: 8px;
             background-color: rgba(0, 51, 102, 0.7);
-            position: sticky;
-            
         }
 
         .navbar ul {
@@ -100,10 +96,6 @@
             display: flex;
             justify-content: center;
             gap: 40px;
-        }
-
-        .navbar li {
-            display: inline;
         }
 
         .navbar a {
@@ -121,77 +113,23 @@
         }
 
         .container {
-            max-width: 500px;
-            margin: 60px auto;
+            max-width: 900px;
+            margin: 40px auto;
             background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(8px);
-            padding: 30px 40px;
+            backdrop-filter: blur(10px);
+            padding: 40px;
             border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-            flex-grow: 1;
-        }
-
-        h2 {
-            text-align: center;
-            color: #ffffff;
-        }
-
-        label {
-            display: block;
-            margin: 18px 0 6px;
-            font-weight: 600;
-            color: #ffffff;
-        }
-
-        input[type=text], input[type=tel] {
-            width: 100%;
-            padding: 10px 12px;
-            border: 1.5px solid #ccc;
-            border-radius: 6px;
-            font-size: 16px;
-            background-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
             color: white;
         }
 
-        input[type=text]::placeholder, input[type=tel]::placeholder {
-            color: #cccccc;
-        }
-
-        input[type=text]:focus, input[type=tel]:focus {
-            border-color: #66aaff;
-            outline: none;
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-
-        .btn-submit {
-            margin-top: 30px;
-            width: 100%;
-            padding: 12px;
-            background-color: #007bff;
-            color: white;
-            font-size: 18px;
-            font-weight: 600;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .btn-submit:hover {
-            background-color: #0056b3;
-        }
-
-        .back-link {
-            display: block;
-            text-align: center;
-            margin-top: 20px;
+        h2, h3 {
             color: #b3d4fc;
-            text-decoration: none;
-            font-weight: 600;
         }
 
-        .back-link:hover {
-            text-decoration: underline;
+        ul {
+            line-height: 1.7;
+            margin-left: 20px;
         }
 
         footer {
@@ -199,13 +137,12 @@
             padding: 15px;
             color: #ccc;
             background: rgba(0, 0, 0, 0.4);
-            margin-top: 40px;
         }
     </style>
 </head>
 <body>
-
 <div class="overlay">
+
     <header>
         <div class="header-container">
             <div class="logo">
@@ -213,7 +150,7 @@
             </div>
 
             <div class="header-title">
-                PahanaEdu - Add New Customer
+                PahanaEdu - User Guide
             </div>
 
             <div class="user-controls">
@@ -237,39 +174,76 @@
     </nav>
 
     <div class="container">
-        <h2>Add New Customer</h2>
+        <h2>Welcome to the PahanaEdu User Guide</h2>
+        <p>This guide explains all the key functions of the PahanaEdu system for easy navigation and operation.</p>
 
-        <% if (request.getAttribute("error") != null) { %>
-            <p style="color: red; font-weight: bold; text-align: center;">
-                <%= request.getAttribute("error") %>
-            </p>
-        <% } %>
+        <h3>🔐 Login & Logout</h3>
+        <ul>
+            <li>Use your valid credentials to log in from the main login page.</li>
+            <li>Click <strong>LOGOUT</strong> at any time to safely exit the system.</li>
+        </ul>
 
-        <form action="customer" method="post">
-            <input type="hidden" name="action" value="add" />
+        <h3>👤 User Profile</h3>
+        <ul>
+            <li>Access your profile via the <strong>User Profile</strong> tab.</li>
+            <li>Update your full name, username, and optionally change your password.</li>
+            <li>Leave password fields blank if no password change is needed.</li>
+        </ul>
 
-            <label for="name">Customer Name</label>
-            <input type="text" id="name" name="name" required maxlength="100" placeholder="Enter customer name" />
+        <h3>📋 Customer Management</h3>
+        <ul>
+            <li>Navigate to <strong>Customer</strong> to view all customers.</li>
+            <li>Search for customers by Name or NIC using the search box.</li>
+            <li>Add new customers by clicking <strong>Add New Customer</strong>.</li>
+            <li>Update customer details via the <strong>Update</strong> button.</li>
+            <li>Delete a customer using the <strong>Delete</strong> button with confirmation.</li>
+        </ul>
 
-            <label for="nic">NIC</label>
-            <input type="text" id="nic" name="nic" required maxlength="20" placeholder="Enter NIC" />
+        <h3>📦 Item Management</h3>
+        <ul>
+            <li>Click <strong>Items</strong> in the navigation menu.</li>
+            <li>Add new items with the item form, edit existing items, or delete items from the list.</li>
+        </ul>
 
-            <label for="address">Address</label>
-            <input type="text" id="address" name="address" required maxlength="200" placeholder="Enter address" />
+        <h3>🧾 Generate Bill</h3>
+        <ul>
+            <li>Go to <strong>Generate Bill</strong> from the top menu.</li>
+            <li>Search items by product name or ID, then click <strong>Search</strong>.</li>
+            <li>Enter the quantity and click <strong>➕ Add to Bill</strong>.</li>
+            <li>The <strong>Bill Summary</strong> table displays all added items with line totals and overall total.</li>
+            <li>Enter the <strong>Customer NIC</strong> and click <strong>Get Customer Name</strong> to fetch details.</li>
+            <li>You can <strong>Remove</strong> items before submitting.</li>
+            <li>Click <strong>✅ Submit Bill</strong> to save the bill in the system.</li>
+        </ul>
+        
+        <h3>🧾 Bill History</h3>
+		<ul>
+		    <li>Access <strong>Bill History</strong> to see all previously generated bills.</li>
+		    <li>Use the search box to find bills by Customer Name, NIC, or Total Amount.</li>
+		    <li>Click <strong>Search</strong> to filter the results.</li>
+		    <li>Click <strong>Clear</strong> to reset the search and show all bills.</li>
+		    <li>Click <strong>View</strong> next to a bill to see full details of that bill on the <strong>Bill Details</strong> page.</li>
+		    <li>The table displays each bill’s ID, customer name, NIC, total amount, and date.</li>
+		</ul>        
 
-            <label for="phoneNo">Phone Number</label>
-            <input type="tel" id="phoneNo" name="phoneNo" required maxlength="15" placeholder="Enter phone number" pattern="[0-9\-+ ]+" title="Phone number can contain digits, spaces, plus or hyphens" />
+        <h3>💡 Tips</h3>
+        <ul>
+            <li>Always verify item quantities and customer NIC before submitting a bill.</li>
+            <li>Use the search features in Customer and Item pages to quickly locate records.</li>
+            <li>Refer to this guide whenever you are unsure about system operations.</li>
+        </ul>
 
-            <button type="submit" class="btn-submit">Add Customer</button>
-        </form>
-
-        <a href="customer" class="back-link">← Back to Customer List</a>
+        <h3>🆘 Support</h3>
+        <ul>
+            <li>For technical issues, contact the system administrator.</li>
+            <li>This <strong>User Guide</strong> can always be accessed from the <strong>User Guide</strong> tab.</li>
+        </ul>
     </div>
 
     <footer>
         &copy; 2025 PahanaEdu. All rights reserved.
     </footer>
-</div>
 
+</div>
 </body>
 </html>
