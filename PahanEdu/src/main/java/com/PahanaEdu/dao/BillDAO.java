@@ -25,17 +25,34 @@ public class BillDAO {
 	    }
 	}
 
-	public void insertBillItems(Connection conn, int billId, List<BillItem> items) throws SQLException {
-	    String sql = "INSERT INTO bill_items (bill_id, item_id, quantity, item_price) VALUES (?, ?, ?, ?)";
-	    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+	public void insertBillItems(Connection conn, int billId, List<BillItem> items) throws Exception {
+	    String sql = "INSERT INTO Bill_Items (bill_id, item_id, quantity, item_price) VALUES (?, ?, ?, ?)";
+	    String updateStock = "UPDATE item SET stock_quantity = stock_quantity - ? WHERE item_id = ? AND stock_quantity >= ?";
+	    
+	    try (PreparedStatement stmt = conn.prepareStatement(sql);
+	         PreparedStatement stockStmt = conn.prepareStatement(updateStock)) {
+	        
 	        for (BillItem item : items) {
 	            stmt.setInt(1, billId);
 	            stmt.setInt(2, item.getItemId());
 	            stmt.setInt(3, item.getQuantity());
 	            stmt.setDouble(4, item.getItemPrice());
 	            stmt.addBatch();
+
+	            stockStmt.setInt(1, item.getQuantity());
+	            stockStmt.setInt(2, item.getItemId());
+	            stockStmt.setInt(3, item.getQuantity());
+	            stockStmt.addBatch();
 	        }
+
 	        stmt.executeBatch();
+	        int[] stockUpdates = stockStmt.executeBatch();
+
+	        for (int result : stockUpdates) {
+	            if (result == 0) {
+	                throw new SQLException("Insufficient stock for one of the items.");
+	            }
+	        }
 	    }
 	}
 
