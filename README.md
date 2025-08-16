@@ -11,7 +11,7 @@ Pahana Edu Bookshop Billing System is a Java-based, menu-driven web application 
 3.	Customer Management
    
   - Add new customer accounts with account number, name, address, and telephone number.
-  - 
+    
   - Edit customer information.
 
   - Display account details for each customer.
