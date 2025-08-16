@@ -273,7 +273,17 @@
     </style>
 </head>
 <body>
-
+	<%
+	    String itemMessage = (String) session.getAttribute("itemMessage");
+	    if (itemMessage != null) {
+	%>
+	<script>
+	    alert('<%= itemMessage %>');
+	</script>
+	<%
+	        session.removeAttribute("itemMessage"); 
+	    }
+	%>
 <div class="overlay">
     <header>
         <div class="header-container">
@@ -308,7 +318,8 @@
         <button type="submit" class="btn btn-search">Search</button>
         <a href="item" class="btn btn-clear">Clear</a>
     </form>
-
+	
+	
     <div class="container">
         <h2>ITEM LIST</h2>
 

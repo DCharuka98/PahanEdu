@@ -123,7 +123,7 @@ public class ItemController extends HttpServlet {
 
             boolean success = itemService.addItem(item);
             if (success) {
-                request.getSession().setAttribute("successMessage", "Item added successfully!");
+            	request.getSession().setAttribute("itemMessage", "Item added successfully!");
                 response.sendRedirect("item");
             } else {
                 request.setAttribute("error", "Failed to add item.");
@@ -167,7 +167,7 @@ public class ItemController extends HttpServlet {
                 boolean updated = itemService.updateItem(item);
 
                 if (updated) {
-                    request.getSession().setAttribute("successMessage", "Item updated successfully!");
+                	request.getSession().setAttribute("itemMessage", "Item updated successfully!");
                     response.sendRedirect("item");
                 } else {
                     request.setAttribute("error", "Failed to update item.");
