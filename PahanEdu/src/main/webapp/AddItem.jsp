@@ -224,23 +224,25 @@
         <% } %>
 
         <form action="item" method="post" enctype="multipart/form-data">
-            <label for="name">Name:</label>
-            <input type="text" name="name" required>
-
-            <label for="description">Description:</label>
-            <textarea name="description" rows="4" required></textarea>
-
-            <label for="price">Price:</label>
-            <input type="number" name="price" step="0.01" required>
-
-            <label for="stock">Stock Quantity:</label>
-            <input type="number" name="stock" required>
-
-            <label for="image">Image:</label>
-            <input type="file" name="image" accept="image/*" required>
-
-            <input type="submit" value="Add Item">
-        </form>
+		    <input type="hidden" name="action" value="add">
+		    
+		    <label for="name">Name:</label>
+		    <input type="text" name="name" required>
+		
+		    <label for="description">Description:</label>
+		    <textarea name="description" rows="4" required></textarea>
+		
+		    <label for="price">Price:</label>
+		    <input type="number" name="price" step="0.01" required>
+		
+		    <label for="stock">Stock Quantity:</label>
+		    <input type="number" name="stock" required>
+		
+		    <label for="image">Image:</label>
+		    <input type="file" name="image" accept="image/*" required>
+		
+		    <input type="submit" value="Add Item">
+		</form>
 
         <a href="item" class="back-link">⬅ Back to Item List</a>
     </div>
