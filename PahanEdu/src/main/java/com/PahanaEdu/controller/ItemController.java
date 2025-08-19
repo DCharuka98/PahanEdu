@@ -28,7 +28,6 @@ public class ItemController extends HttpServlet {
         String itemIdParam = request.getParameter("itemId");
         String query = request.getParameter("query");
 
-        // Show UpdateItem.jsp with item data if itemId is provided
         if (itemIdParam != null && !itemIdParam.trim().isEmpty()) {
             try {
                 int itemId = Integer.parseInt(itemIdParam);
@@ -38,7 +37,6 @@ public class ItemController extends HttpServlet {
                     request.getRequestDispatcher("UpdateItem.jsp").forward(request, response);
                     return;
                 } else {
-                    // Item not found
                     response.sendRedirect("item");
                     return;
                 }
@@ -49,7 +47,6 @@ public class ItemController extends HttpServlet {
             }
         }
 
-        // Default: show list of items with optional search query
         List<Item> itemList;
         if (query != null && !query.trim().isEmpty()) {
             itemList = itemService.searchItems(query.trim());
@@ -68,7 +65,6 @@ public class ItemController extends HttpServlet {
         String action = request.getParameter("action");
 
         if ("add".equals(action)) {
-            // Handle add new item
             String name = request.getParameter("name");
             String description = request.getParameter("description");
             double price = Double.parseDouble(request.getParameter("price"));
@@ -96,7 +92,7 @@ public class ItemController extends HttpServlet {
 
             boolean success = itemService.addItem(item);
             if (success) {
-                request.getSession().setAttribute("successMessage", "Item added successfully!");
+            	request.getSession().setAttribute("itemMessage", "Item added successfully!");
                 response.sendRedirect("item");
             } else {
                 request.setAttribute("error", "Failed to add item.");
@@ -105,7 +101,6 @@ public class ItemController extends HttpServlet {
         }
 
         else if ("update".equals(action)) {
-            // Handle update existing item
             try {
                 int itemId = Integer.parseInt(request.getParameter("itemId"));
                 String name = request.getParameter("name");
@@ -122,12 +117,10 @@ public class ItemController extends HttpServlet {
 
                 String imagePath;
 
-                // If a new image was uploaded, save it and update path; otherwise keep existing
                 if (fileName != null && !fileName.isEmpty()) {
                     imagePath = "item_images/" + fileName;
                     filePart.write(uploadPath + File.separator + fileName);
                 } else {
-                    // Retain existing image path if no new file uploaded
                     Item existingItem = itemService.getItemById(itemId);
                     imagePath = (existingItem != null) ? existingItem.getImagePath() : "";
                 }
@@ -143,7 +136,7 @@ public class ItemController extends HttpServlet {
                 boolean updated = itemService.updateItem(item);
 
                 if (updated) {
-                    request.getSession().setAttribute("successMessage", "Item updated successfully!");
+                	request.getSession().setAttribute("itemMessage", "Item updated successfully!");
                     response.sendRedirect("item");
                 } else {
                     request.setAttribute("error", "Failed to update item.");

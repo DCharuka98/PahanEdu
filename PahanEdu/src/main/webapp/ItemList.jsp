@@ -273,7 +273,7 @@
     </style>
 </head>
 <body>
-	<%
+<%
 	    String itemMessage = (String) session.getAttribute("itemMessage");
 	    if (itemMessage != null) {
 	%>
