@@ -228,55 +228,58 @@
             <th>Date</th>
             <th>Action</th>
         </tr>
-        <%
-            try {
-                conn = DBConnection.getInstance().getConnection();
-                String sql = "SELECT b.bill_id, c.name, c.nic, b.total_amount, b.bill_date " +
-                             "FROM bill b JOIN customer c ON b.customer_id = c.customer_id ";
-
-                if (searchQuery != null && !searchQuery.trim().isEmpty()) {
-                    sql += "WHERE c.name LIKE ? OR c.nic LIKE ? OR b.total_amount = ?";
-                    ps = conn.prepareStatement(sql);
-                    ps.setString(1, "%" + searchQuery + "%");
-                    ps.setString(2, "%" + searchQuery + "%");
-                    try {
-                        double amount = Double.parseDouble(searchQuery);
-                        ps.setDouble(3, amount);
-                    } catch (NumberFormatException e) {
-                        ps.setDouble(3, -1); 
-                    }
-                } else {
-                    ps = conn.prepareStatement(sql);
-                }
-
-                rs = ps.executeQuery();
-                boolean hasResults = false;
-                while (rs.next()) {
-                    hasResults = true;
-        %>
-        <tr>
-            <td><%= rs.getInt("bill_id") %></td>
-            <td><%= rs.getString("name") %></td>
-            <td><%= rs.getString("nic") %></td>
-            <td><%= String.format("%.2f", rs.getDouble("total_amount")) %></td>
-            <td><%= rs.getDate("bill_date") %></td>
-            <td>
-                <a class="view-btn" href="BillDetails.jsp?billId=<%= rs.getInt("bill_id") %>">View</a>
-            </td>
-        </tr>
-        <%
-                }
-                if (!hasResults) {
-                    out.println("<tr><td colspan='6' style='color:red;'>No results found.</td></tr>");
-                }
-            } catch (Exception e) {
-                out.println("<tr><td colspan='6' style='color:red;'>Error: " + e.getMessage() + "</td></tr>");
-            } finally {
-                if (rs != null) rs.close();
-                if (ps != null) ps.close();
-                if (conn != null) conn.close();
-            }
-        %>
+			<%
+			try {
+			    conn = DBConnection.getInstance().getConnection();
+			    String sql = "SELECT b.bill_id, c.name, c.nic, b.total_amount, b.bill_date " +
+			                 "FROM bill b JOIN customer c ON b.customer_id = c.customer_id ";
+			
+			    if (searchQuery != null && !searchQuery.trim().isEmpty()) {
+			        sql += "WHERE c.name LIKE ? OR c.nic LIKE ? OR b.total_amount = ? ";
+			        sql += "ORDER BY b.bill_id ASC"; 
+			
+			        ps = conn.prepareStatement(sql);
+			        ps.setString(1, "%" + searchQuery + "%");
+			        ps.setString(2, "%" + searchQuery + "%");
+			        try {
+			            double amount = Double.parseDouble(searchQuery);
+			            ps.setDouble(3, amount);
+			        } catch (NumberFormatException e) {
+			            ps.setDouble(3, -1); 
+			        }
+			    } else {
+			        sql += "ORDER BY b.bill_id ASC"; 
+			        ps = conn.prepareStatement(sql);
+			    }
+			
+			    rs = ps.executeQuery();
+			    boolean hasResults = false;
+			    while (rs.next()) {
+			        hasResults = true;
+			%>
+			<tr>
+			    <td><%= rs.getInt("bill_id") %></td>
+			    <td><%= rs.getString("name") %></td>
+			    <td><%= rs.getString("nic") %></td>
+			    <td><%= String.format("%.2f", rs.getDouble("total_amount")) %></td>
+			    <td><%= rs.getDate("bill_date") %></td>
+			    <td>
+			        <a class="view-btn" href="BillDetails.jsp?billId=<%= rs.getInt("bill_id") %>">View</a>
+			    </td>
+			</tr>
+			<%
+			    }
+			    if (!hasResults) {
+			        out.println("<tr><td colspan='6' style='color:red;'>No results found.</td></tr>");
+			    }
+			} catch (Exception e) {
+			    out.println("<tr><td colspan='6' style='color:red;'>Error: " + e.getMessage() + "</td></tr>");
+			} finally {
+			    if (rs != null) rs.close();
+			    if (ps != null) ps.close();
+			    if (conn != null) conn.close();
+			}
+			%>
     </table>
 
     <footer>

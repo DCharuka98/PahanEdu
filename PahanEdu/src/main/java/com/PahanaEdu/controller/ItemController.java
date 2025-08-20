@@ -1,4 +1,6 @@
 package com.PahanaEdu.controller;
+import com.google.gson.Gson;
+
 
 import com.PahanaEdu.model.Item;
 import com.PahanaEdu.service.ItemService;
@@ -11,53 +13,82 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/item")
+@WebServlet(urlPatterns = {"/item", "/item-search"})
 @MultipartConfig(
     fileSizeThreshold = 1024 * 1024 * 2,  // 2MB
     maxFileSize = 1024 * 1024 * 10,       // 10MB
     maxRequestSize = 1024 * 1024 * 50     // 50MB
 )
 public class ItemController extends HttpServlet {
+	
 
-    private ItemService itemService = new ItemService();
+	    private final ItemService itemService = new ItemService();
+	    private final Gson gson = new Gson();
 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+	    @Override
+	    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+	            throws ServletException, IOException {
 
-        String itemIdParam = request.getParameter("itemId");
-        String query = request.getParameter("query");
+	        if ("/item-search".equals(request.getServletPath())) {
+	            handleItemSearch(request, response);
+	            return;
+	        }
 
-        if (itemIdParam != null && !itemIdParam.trim().isEmpty()) {
-            try {
-                int itemId = Integer.parseInt(itemIdParam);
-                Item item = itemService.getItemById(itemId);
-                if (item != null) {
-                    request.setAttribute("item", item);
-                    request.getRequestDispatcher("UpdateItem.jsp").forward(request, response);
-                    return;
-                } else {
-                    response.sendRedirect("item");
-                    return;
-                }
-            } catch (NumberFormatException e) {
-                e.printStackTrace();
-                response.sendRedirect("item");
-                return;
-            }
-        }
+	        String itemIdParam = request.getParameter("itemId");
+	        String query = request.getParameter("query");
 
-        List<Item> itemList;
-        if (query != null && !query.trim().isEmpty()) {
-            itemList = itemService.searchItems(query.trim());
-        } else {
-            itemList = itemService.getAllItems();
-        }
+	        if (itemIdParam != null && !itemIdParam.trim().isEmpty()) {
+	            try {
+	                int itemId = Integer.parseInt(itemIdParam);
+	                Item item = itemService.getItemById(itemId);
+	                if (item != null) {
+	                    request.setAttribute("item", item);
+	                    request.getRequestDispatcher("UpdateItem.jsp").forward(request, response);
+	                    return;
+	                }
+	            } catch (NumberFormatException e) {
+	                e.printStackTrace();
+	            }
+	            response.sendRedirect("item");
+	            return;
+	        }
 
-        request.setAttribute("items", itemList);
-        request.getRequestDispatcher("ItemList.jsp").forward(request, response);
-    }
+	        List<Item> itemList = (query != null && !query.trim().isEmpty())
+	                ? itemService.searchItems(query.trim())
+	                : itemService.getAllItems();
 
+	        request.setAttribute("items", itemList);
+	        request.getRequestDispatcher("ItemList.jsp").forward(request, response);
+	    }
+
+	    private void handleItemSearch(HttpServletRequest request, HttpServletResponse response)
+	            throws IOException {
+
+	        String query = request.getParameter("query");
+	        Item item = null;
+
+	        if (query != null && !query.trim().isEmpty()) {
+	            try {
+	                int id = Integer.parseInt(query.trim());
+	                item = itemService.getItemById(id);
+	            } catch (NumberFormatException e) {
+	                List<Item> matches = itemService.searchItems(query.trim());
+	                if (!matches.isEmpty()) {
+	                    item = matches.get(0);
+	                }
+	            }
+	        }
+
+	        if (item != null && item.getImagePath() != null && !item.getImagePath().isEmpty()) {
+	            String fullImagePath = request.getContextPath() + "/" + item.getImagePath();
+	            item.setImagePath(fullImagePath);
+	        }
+
+	        response.setContentType("application/json");
+	        response.setCharacterEncoding("UTF-8");
+	        response.getWriter().write(item != null ? gson.toJson(item) : "{}");
+	    }
+	    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -136,7 +167,7 @@ public class ItemController extends HttpServlet {
                 boolean updated = itemService.updateItem(item);
 
                 if (updated) {
-                	request.getSession().setAttribute("itemMessage", "Item updated successfully!");
+                	request.getSession().setAttribute("itemMessage", "Item added successfully!");
                     response.sendRedirect("item");
                 } else {
                     request.setAttribute("error", "Failed to update item.");
